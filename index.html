@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Left-Aligned Greeting Header</title>
+  <!-- Google Fonts: Using Montserrat for a modern, luxurious look -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Base body styles */
+    body {
+      background-color: #ffffff; /* White background */
+      color: #36454F; /* Medium charcoal text */
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+    }
+    
+    /* Header styling */
+    header {
+      width: 100%;
+      padding: 5px 0; /* Reduced vertical padding for a compact header */
+      background-color: #ffffff;
+      border-bottom: 1px solid #e0e0e0; /* Subtle bottom border */
+      text-align: left; /* Ensure text is left-aligned */
+    }
+    
+    /* Container: full width, flush left with minimal left padding */
+    .container {
+      width: 100%;
+      margin: 0;
+      padding-left: 5px;  /* Minimal left padding */
+    }
+    
+    /* Greeting styling: even smaller */
+    .greeting {
+      font-size: 1.8rem; /* Reduced from 2rem */
+      font-weight: 700;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+    
+    /* Date text styling: even smaller */
+    .date-text {
+      font-size: 0.75rem; /* Reduced from 0.9rem */
+      margin-bottom: 3px;
+    }
+    
+    /* Clock styling: even smaller */
+    .clock {
+      font-size: 1rem; /* Reduced from 1.2rem */
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <!-- Dynamic greeting -->
+      <div class="greeting">
+        Good <span id="greetingPart"></span>, Shawni
+      </div>
+      <!-- Date display -->
+      <div class="date-text">
+        Today's date is <span id="date"></span>
+      </div>
+      <!-- Live clock -->
+      <div class="clock">
+        <span id="hour"></span>:<span id="min"></span>:<span id="sec"></span> <span id="ampm"></span>
+      </div>
+    </div>
+  </header>
+  
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      
+      // Update date (e.g., "Monday, January 1, 2025")
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('date').textContent = now.toLocaleDateString(undefined, options);
+      
+      // Convert 24-hour time to 12-hour format
+      let hrs = now.getHours();
+      const ampm = hrs >= 12 ? 'pm' : 'am';
+      let hour = hrs % 12;
+      if (hour === 0) hour = 12;
+      const min = now.getMinutes();
+      const sec = now.getSeconds();
+      
+      // Format numbers with leading zeros
+      document.getElementById('hour').textContent = hour < 10 ? '0' + hour : hour;
+      document.getElementById('min').textContent = min < 10 ? '0' + min : min;
+      document.getElementById('sec').textContent = sec < 10 ? '0' + sec : sec;
+      document.getElementById('ampm').textContent = ampm;
+      
+      // Set dynamic greeting text based on time
+      let greetPart = "";
+      if (hrs < 12) {
+        greetPart = "Morning";
+      } else if (hrs < 17) {
+        greetPart = "Afternoon";
+      } else {
+        greetPart = "Evening";
+      }
+      document.getElementById('greetingPart').textContent = greetPart;
+    }
+    
+    // Update immediately and every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+</html>
